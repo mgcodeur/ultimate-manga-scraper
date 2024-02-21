@@ -14,6 +14,8 @@ const scrapeMangaChapter = async (slug, chapter) => {
 
   const page = await context.newPage();
 
+  let response = {};
+
   for(const link of chapterLinks) {
     await page.goto(link, {
       timeout: 180000
@@ -42,14 +44,16 @@ const scrapeMangaChapter = async (slug, chapter) => {
       images: images
     });
 
+
     await saveInJsonFile(data, `${config.output.catalog}/${slug}/details.json`);
+    response = data;
 
     console.log('Chapter', chapterName, 'done');
   }
 
   await browser.close();
 
-  return true;
+  return response;
 };
 
 export { scrapeMangaChapter };
