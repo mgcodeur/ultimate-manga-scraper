@@ -21,6 +21,10 @@ const scrapeMangaChapter = async (slug, chapter) => {
       timeout: 1800000
     });
 
+    await page.waitForSelector('select#chapter option[selected]', {
+      timeout: 1800000
+    });
+
     const chapterName = (await page.$eval('select#chapter option[selected]', el => el.textContent, {
       timeout: 1800000
     }))
