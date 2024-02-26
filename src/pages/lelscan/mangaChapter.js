@@ -7,7 +7,7 @@ const scrapeMangaChapter = async (slug, chapter) => {
   const chapterLinks = await getAllChapterLinks(slug);
 
   const browser = await playwright.chromium.launch({
-    headless: false
+    headless: true
   });
 
   const context = await browser.newContext();
@@ -18,11 +18,11 @@ const scrapeMangaChapter = async (slug, chapter) => {
 
   for(const link of chapterLinks) {
     await page.goto(link, {
-      timeout: 180000
+      timeout: 1800000
     });
 
     const chapterName = (await page.$eval('select#chapter option[selected]', el => el.textContent, {
-      timeout: 180000
+      timeout: 1800000
     }))
     .normalize('NFD').trim()
 
@@ -35,7 +35,7 @@ const scrapeMangaChapter = async (slug, chapter) => {
         }
         return img.getAttribute('data-src');
       });
-    }, {timeout: 180000});
+    }, {timeout: 1800000});
 
     const data = readJsonFile(`${config.output.catalog}/${slug}/details.json`);
     data.chapters = data.chapters || [];

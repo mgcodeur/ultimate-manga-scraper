@@ -8,7 +8,7 @@ import { cleanObject } from '../../helpers/object.js';
 
 const scrapeMangaDetail = async (slug) => {
   const browser = await playwright.chromium.launch({
-    headless: false
+    headless: true
   });
   
   const context = await browser.newContext();
@@ -30,12 +30,12 @@ const scrapeMangaDetail = async (slug) => {
   }
   
   await page.goto(`${config.lelScan.baseUrl}/manga/${slug}/`, {
-    timeout: 180000
+    timeout: 1800000
   });
   
   const mangaDetails = {
     title: await page.$eval('h1.entry-title', el => el.textContent, {
-      timeout: 180000
+      timeout: 1800000
     }),
     alternative: await page.evaluate(() => {
       const el = document.querySelector('.alternative');
@@ -70,14 +70,14 @@ const scrapeMangaDetail = async (slug) => {
 
 const getAllChapterLinks = async (slug) => {
   const browser = await playwright.chromium.launch({
-    headless: false
+    headless: true
   });
   
   const context = await browser.newContext();
   const page = await context.newPage();
   
   await page.goto(`${config.lelScan.baseUrl}/manga/${slug}/`, {
-    timeout: 180000
+    timeout: 1800000
   });
   
   const chapterLinks = await page.$$eval('[data-num] a', els => els.map(el => el.href).reverse());
